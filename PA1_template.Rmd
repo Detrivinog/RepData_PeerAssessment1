@@ -1,25 +1,130 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document:
-    keep_md: true
+  html_document: 
+    keep_md: yes
+    theme: readable
+    highlight: tango
+    toc: yes
+    toc_depth: 2
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F)
+```
+## Packages 
+```{r}
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(lattice)
+library(xtable)
+library(impute)
+```
 
 
 ## Loading and preprocessing the data
 
+```{r}
+data <- read.csv("activity.csv")
+data$date <- strptime(data$date, format = "%Y-%m-%d")
+data$day<- as.integer(difftime(data$date, data$date[1], units = "days"))
+```
 
 
 ## What is mean total number of steps taken per day?
 
+I Summary in data.frame *df*,  total, mean and median steps by day.
 
+```{r}
+summary_steps <- data %>% group_by(day) %>% 
+    summarise(Total = sum(steps, na.rm = T), Media=mean(steps, na.rm = T), 
+              Mediana = median(steps, na.rm = T))
+```
+
+
+```{r}
+ggplot(summary_steps, aes(day, Total)) + ylab("Steps") + xlab("Day")+
+    geom_bar(stat = "Identity")
+```
+
+```{r, results='asis'}
+xt <- xtable(summary_steps, caption = "Table 1. Mean and median number of steps taken each day", 
+             align = "ccccc", digits = 2)
+print(xt, type="html", html.table.attributes = 'align="center", width=40%, 
+                                                frame="below", rules="rows"')
+```
 
 ## What is the average daily activity pattern?
 
+```{r}
+df <- data %>% group_by(interval) %>% summarise(media=mean(steps, na.rm = T))
+(max_steps <- df[which.max(df$media),])
+```
+
+```{r}
+ggplot(df, aes(interval, media)) + geom_line(size=0.7, color = "blue") + xlab("Minutes") + 
+    geom_vline(xintercept = max_steps$interval[1], linetype="dashed", color = "red") + 
+    ylab("Average steps daily") + geom_text(label="Max Interval = 835", x = 1200, y = 200) 
+```
 
 
 ## Imputing missing values
 
+```{r, results='asis'}
+na <- data %>% mutate_all(is.na) %>% summarise_all(sum)
+xt <- xtable(na, caption = "Table 2. Total missing values", 
+             align = "ccccc", digits = 2)
+print(xt, type="html", html.table.attributes = 'align="center", width=40%, 
+                                                frame="below", rules="rows"')
+```
+
+```{r, results='hide'}
+df1 <- data %>% mutate(date = as.numeric(date))
+df_impute <- as.data.frame(impute.knn(as.matrix(df1))$data)
+```
+
+```{r}
+summary_impute <- df_impute %>% group_by(day) %>% 
+    summarise(Total = sum(steps, na.rm = T), Media=mean(steps, na.rm = T), 
+              Mediana = median(steps, na.rm = T))
+
+```
+
+```{r}
+ggplot(summary_impute, aes(day, Total)) + ylab("Steps") + xlab("Day") +
+    geom_bar(stat = "Identity", position=position_dodge(width=.9))
+     
+```
+
+```{r, results='asis'}
+xt <- xtable(summary_impute,,align = "ccccc", digits = 2, 
+             caption = "Table 3. Mean and median number of steps taken each day with missing values imputing")
+print(xt, type="html", html.table.attributes = 'align="center", width=40%, 
+                                                frame="below", rules="rows"')
+```
+
+### Differences
+The mean of total increase imputing the missing values. some days with NAs change the values, however the mean of means is equal.  
+```{r}
+na_compare <- bind_rows("with_NA" = summary_steps, "impute_NA" = summary_impute, 
+                        .id = "set") %>% mutate(set = as.factor(set))
+    
+ggplot(na_compare, aes(day, Total, fill=set)) + ylab("Steps") + xlab("Day") +
+    geom_bar(stat = "Identity", position=position_dodge())
+```
+
+```{r}
+with(na_compare, tapply(Media, set, mean, na.rm=T))
+with(na_compare, tapply(Total, set, mean, na.rm=T))
+```
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+data$wd <- as.factor(weekdays(data$date))
+levels(data$wd) <- c("Weekend", rep("Weekday", 4), "Weekend", "Weekday")
+df <- data %>% group_by(interval, wd) %>% summarise(media=mean(steps, na.rm = T))
+xyplot(media~interval|wd, df, type="l", layout=c(1,2), ylab = "Steps", xlab = "Minutes")
+```
+
