@@ -78,6 +78,9 @@ print(xt, type="html", html.table.attributes = 'align="center", width=40%,
                                                 frame="below", rules="rows"')
 ```
 
+
+The missing values were imputing withe *impute.knn()* function of package impute. Using the KNN algoritm. 
+
 ```{r, results='hide'}
 df1 <- data %>% mutate(date = as.numeric(date))
 df_impute <- as.data.frame(impute.knn(as.matrix(df1))$data)

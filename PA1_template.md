@@ -64,7 +64,7 @@ print(xt, type="html", html.table.attributes = 'align="center", width=40%,
 ```
 
 <!-- html table generated in R 4.0.2 by xtable 1.8-4 package -->
-<!-- Fri Oct 30 17:01:49 2020 -->
+<!-- Fri Oct 30 17:41:17 2020 -->
 <table align="center", width=40%, 
                                                 frame="below", rules="rows">
 <caption align="bottom"> Table 1. Mean and median number of steps taken each day </caption>
@@ -179,13 +179,16 @@ print(xt, type="html", html.table.attributes = 'align="center", width=40%,
 ```
 
 <!-- html table generated in R 4.0.2 by xtable 1.8-4 package -->
-<!-- Fri Oct 30 17:01:50 2020 -->
+<!-- Fri Oct 30 17:41:18 2020 -->
 <table align="center", width=40%, 
                                                 frame="below", rules="rows">
 <caption align="bottom"> Table 2. Total missing values </caption>
 <tr> <th>  </th> <th> steps </th> <th> date </th> <th> interval </th> <th> day </th>  </tr>
   <tr> <td align="center"> 1 </td> <td align="center"> 2304 </td> <td align="center">   0 </td> <td align="center">   0 </td> <td align="center">   0 </td> </tr>
    </table>
+
+
+The missing values were imputing withe *impute.knn()* function of package impute. Using the KNN algoritm. 
 
 
 ```r
@@ -217,7 +220,7 @@ print(xt, type="html", html.table.attributes = 'align="center", width=40%,
 ```
 
 <!-- html table generated in R 4.0.2 by xtable 1.8-4 package -->
-<!-- Fri Oct 30 17:01:50 2020 -->
+<!-- Fri Oct 30 17:41:18 2020 -->
 <table align="center", width=40%, 
                                                 frame="below", rules="rows">
 <caption align="bottom"> Table 3. Mean and median number of steps taken each day with missing values imputing </caption>

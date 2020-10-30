@@ -540,7 +540,7 @@ summary {
 <span id="cb6-3"><a href="#cb6-3"></a><span class="kw">print</span>(xt, <span class="dt">type=</span><span class="st">&quot;html&quot;</span>, <span class="dt">html.table.attributes =</span> <span class="st">&#39;align=&quot;center&quot;, width=40%, </span></span>
 <span id="cb6-4"><a href="#cb6-4"></a><span class="st">                                                frame=&quot;below&quot;, rules=&quot;rows&quot;&#39;</span>)</span></code></pre></div>
 <!-- html table generated in R 4.0.2 by xtable 1.8-4 package -->
-<!-- Fri Oct 30 17:01:49 2020 -->
+<!-- Fri Oct 30 17:41:17 2020 -->
 <table align="center" , width="40%," frame="below" , rules="rows">
 <caption align="bottom"> Table 1. Mean and median number of steps taken each day </caption>
 <tr> <th>  </th> <th> day </th> <th> Total </th> <th> Media </th> <th> Mediana </th>  </tr>
@@ -635,12 +635,13 @@ summary {
 <span id="cb11-4"><a href="#cb11-4"></a><span class="kw">print</span>(xt, <span class="dt">type=</span><span class="st">&quot;html&quot;</span>, <span class="dt">html.table.attributes =</span> <span class="st">&#39;align=&quot;center&quot;, width=40%, </span></span>
 <span id="cb11-5"><a href="#cb11-5"></a><span class="st">                                                frame=&quot;below&quot;, rules=&quot;rows&quot;&#39;</span>)</span></code></pre></div>
 <!-- html table generated in R 4.0.2 by xtable 1.8-4 package -->
-<!-- Fri Oct 30 17:01:50 2020 -->
+<!-- Fri Oct 30 17:41:18 2020 -->
 <table align="center" , width="40%," frame="below" , rules="rows">
 <caption align="bottom"> Table 2. Total missing values </caption>
 <tr> <th>  </th> <th> steps </th> <th> date </th> <th> interval </th> <th> day </th>  </tr>
   <tr> <td align="center"> 1 </td> <td align="center"> 2304 </td> <td align="center">   0 </td> <td align="center">   0 </td> <td align="center">   0 </td> </tr>
    </table>
+<p>The missing values were imputing withe <em>impute.knn()</em> function of package impute. Using the KNN algoritm.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>df1 &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">date =</span> <span class="kw">as.numeric</span>(date))</span>
 <span id="cb12-2"><a href="#cb12-2"></a>df_impute &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">impute.knn</span>(<span class="kw">as.matrix</span>(df1))<span class="op">$</span>data)</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>summary_impute &lt;-<span class="st"> </span>df_impute <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(day) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -654,7 +655,7 @@ summary {
 <span id="cb15-3"><a href="#cb15-3"></a><span class="kw">print</span>(xt, <span class="dt">type=</span><span class="st">&quot;html&quot;</span>, <span class="dt">html.table.attributes =</span> <span class="st">&#39;align=&quot;center&quot;, width=40%, </span></span>
 <span id="cb15-4"><a href="#cb15-4"></a><span class="st">                                                frame=&quot;below&quot;, rules=&quot;rows&quot;&#39;</span>)</span></code></pre></div>
 <!-- html table generated in R 4.0.2 by xtable 1.8-4 package -->
-<!-- Fri Oct 30 17:01:50 2020 -->
+<!-- Fri Oct 30 17:41:18 2020 -->
 <table align="center" , width="40%," frame="below" , rules="rows">
 <caption align="bottom"> Table 3. Mean and median number of steps taken each day with missing values imputing </caption>
 <tr> <th>  </th> <th> day </th> <th> Total </th> <th> Media </th> <th> Mediana </th>  </tr>
